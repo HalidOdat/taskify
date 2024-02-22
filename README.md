@@ -51,6 +51,15 @@ To run the app execute the following command:
 flutter run
 ```
 
+## Screnshots
+
+![register route](./screenshots/2024-02-22_21-25_1.png)
+![login route](./screenshots/2024-02-22_21-26.png)
+![task list route](./screenshots/2024-02-19_08-46.png)
+![task add route](./screenshots/add_task_route.png)
+![calendar route](./screenshots/2024-02-22_21-25.png)
+![date route](./screenshots/2024-02-22_21-29.png)
+
 ## Author
 
 | Name  | Lastname | Index  |

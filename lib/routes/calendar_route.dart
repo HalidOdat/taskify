@@ -63,13 +63,9 @@ class _CalendarRouteState extends State<CalendarRoute> {
 
                   return ListTile(
                     title: Text(
-                      item.due!.toIso8601String(),
+                      item.description,
                       style: const TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      '${item.due!.hour}:${item.due!.minute}',
-                      style: const TextStyle(fontSize: 20),
                     ),
                   );
                 },
