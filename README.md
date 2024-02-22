@@ -9,12 +9,13 @@ tracking, and managing tasks.
 - Custom UI elements
 - State Menagement: Using the flutter bloc package.
 - Folder based routing
-- Creation and deletion of tasks
-- Notifications of tasks before due date
+- Creation, deletion of tasks
+- Notifications/reminders of tasks before due date
 - Camera
 - Dynamic theme mode (light and dark) switching based on ambient light sensors.
 - Register and Login through firebase web service.
 - Calendar view of tasks
+- Pesistent storage of tasks
 
 ## Design Patterns
 
@@ -28,6 +29,11 @@ The application uses several design patterns:
 - Builder pattern
 
 ## Installation
+
+Requirements:
+
+- Flutter installed
+- Android Emulator installed
 
 To install the dependencies and run the following commands in the terminal
 
@@ -43,18 +49,9 @@ For the application to compile and run the dependencies need to be installed wit
 flutter packages get
 ```
 
-## Running
-
-To run the app execute the following command:
-
-```bash
-flutter run
-```
-
-## Screnshots
+## Some Screnshots
 
 ![register route](./screenshots/2024-02-22_21-25_1.png)
-![login route](./screenshots/2024-02-22_21-26.png)
 ![task list route](./screenshots/2024-02-19_08-46.png)
 ![task add route](./screenshots/add_task_route.png)
 ![calendar route](./screenshots/2024-02-22_21-25.png)

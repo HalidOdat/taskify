@@ -36,7 +36,7 @@ class TaskItemWidget extends StatelessWidget {
       title: Padding(
         padding: const EdgeInsets.only(bottom: 4),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               task.description,
