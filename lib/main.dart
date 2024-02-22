@@ -1,18 +1,27 @@
 import 'dart:async';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:light/light.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskify/blocs/task_bloc.dart';
+import 'package:taskify/models/task.dart';
 import 'package:taskify/services/notifications.dart';
 import 'package:taskify/repository/task_repository.dart';
 import 'package:taskify/routes/routes.dart';
 import 'package:catppuccin_flutter/catppuccin_flutter.dart';
 import 'package:taskify/theme.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   await NotificationController.initialize();
 
@@ -59,6 +68,38 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     startListening();
+
+    AwesomeNotifications().setListeners(
+        onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+        onDismissActionReceivedMethod:
+            NotificationController.onDismissActionReceivedMethod,
+        onNotificationCreatedMethod:
+            NotificationController.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod:
+            NotificationController.onNotificationDisplayedMethod);
+  }
+
+  void _scheduleNotification(Task task) {
+    if (task.due == null) {
+      return;
+    }
+    final due = task.due!;
+
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: task.uuid.hashCode,
+        channelKey: "basic_channel",
+        title: task.description,
+        body: "You have a task due tomorrow!",
+      ),
+      schedule: NotificationCalendar(
+        day: due.subtract(const Duration(days: 1)).day,
+        month: due.subtract(const Duration(days: 1)).month,
+        year: due.subtract(const Duration(days: 1)).year,
+        hour: due.subtract(const Duration(days: 1)).hour,
+        minute: due.subtract(const Duration(days: 1)).minute,
+      ),
+    );
   }
 
   @override
@@ -73,14 +114,21 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         ],
-        child: MaterialApp(
-          title: 'Taskify',
-          theme: catppuccinTheme(catppuccin.frappe),
-          darkTheme: catppuccinTheme(catppuccin.macchiato),
-          themeMode: _luxValue < 0
-              ? ThemeMode.system
-              : (_luxValue > 50 ? ThemeMode.light : ThemeMode.dark),
-          onGenerateRoute: Routes.onGenerateRoute,
+        child: BlocListener<TaskBloc, TaskState>(
+          listener: (context, state) {
+            for (int i = 0; i < state.tasks.length; i++) {
+              _scheduleNotification(state.tasks[i]);
+            }
+          },
+          child: MaterialApp(
+            title: 'Taskify',
+            theme: catppuccinTheme(catppuccin.frappe),
+            darkTheme: catppuccinTheme(catppuccin.macchiato),
+            themeMode: _luxValue < 0
+                ? ThemeMode.system
+                : (_luxValue > 50 ? ThemeMode.light : ThemeMode.dark),
+            onGenerateRoute: Routes.onGenerateRoute,
+          ),
         ),
       ),
     );

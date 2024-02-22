@@ -9,10 +9,12 @@ tracking, and managing tasks.
 - Custom UI elements
 - State Menagement: Using the flutter bloc package.
 - Folder based routing
-- Creation, updating and deletion of tasks
-- Notifications
+- Creation and deletion of tasks
+- Notifications of tasks before due date
 - Camera
 - Dynamic theme mode (light and dark) switching based on ambient light sensors.
+- Register and Login through firebase web service.
+- Calendar view of tasks
 
 ## Design Patterns
 
