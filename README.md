@@ -9,7 +9,7 @@ tracking, and managing tasks.
 - Custom UI elements
 - State Menagement: Using the flutter bloc package.
 - Folder based routing
-- Creation, deletion of tasks
+- Creation, edit, deletion of tasks
 - Notifications/reminders of tasks before due date
 - Camera
 - Dynamic theme mode (light and dark) switching based on ambient light sensors.

@@ -18,9 +18,9 @@ final class TaskRemoveEvent extends TaskEvent {
   TaskRemoveEvent({required this.task});
 }
 
-final class TaskToggleEvent extends TaskEvent {
+final class TaskUpdateEvent extends TaskEvent {
   final Task task;
-  TaskToggleEvent({required this.task});
+  TaskUpdateEvent({required this.task});
 }
 
 final class TaskSearchEvent extends TaskEvent {
@@ -54,8 +54,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       emit(TaskState(tasks: tasks));
     });
 
-    on<TaskToggleEvent>((event, emit) async {
-      event.task.status = event.task.status.toggle();
+    on<TaskUpdateEvent>((event, emit) async {
       await repository.update(event.task);
       final tasks = await repository.getAll();
       emit(TaskState(tasks: tasks));

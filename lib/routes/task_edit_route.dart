@@ -7,18 +7,17 @@ import 'package:taskify/models/task.dart';
 import 'package:taskify/services/camera_service.dart';
 import 'package:taskify/widgets/custom_app_bar.dart';
 import 'package:taskify/widgets/tags_widget.dart';
-import 'package:uuid/uuid.dart';
-import 'package:path/path.dart' as path;
 
-class TaskAddRoute extends StatefulWidget {
-  const TaskAddRoute({super.key});
+class TaskEditRoute extends StatefulWidget {
+  final Task task;
+  const TaskEditRoute({super.key, required this.task});
 
   @override
-  State<TaskAddRoute> createState() => _TaskAddRouteState();
+  State<TaskEditRoute> createState() => _TaskEditRouteState();
 }
 
-class _TaskAddRouteState extends State<TaskAddRoute> {
-  TextEditingController description = TextEditingController();
+class _TaskEditRouteState extends State<TaskEditRoute> {
+  late TextEditingController description;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   final DateTime _focusedDate = DateTime.now();
   DateTime? _selectedDay;
@@ -28,6 +27,17 @@ class _TaskAddRouteState extends State<TaskAddRoute> {
   final DateTime _firstDay =
       DateTime.now().subtract(const Duration(days: 365 * 100));
   final DateTime _lastDay = DateTime.now().add(const Duration(days: 365 * 100));
+
+  @override
+  void initState() {
+    super.initState();
+
+    description = TextEditingController(text: widget.task.description);
+    _selectedDay = widget.task.due;
+    _tags = widget.task.tags.toList();
+    _image =
+        widget.task.imagePath == null ? null : File(widget.task.imagePath!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +111,7 @@ class _TaskAddRouteState extends State<TaskAddRoute> {
           if (description.value.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Cannot add task without a description'),
+                content: Text('Cannot set task without a description'),
                 behavior: SnackBarBehavior.floating,
               ),
             );
@@ -110,14 +120,13 @@ class _TaskAddRouteState extends State<TaskAddRoute> {
 
           if (context.mounted) {
             context.read<TaskBloc>().add(
-                  TaskAddEvent(
-                    task: Task(
-                      uuid: const Uuid().v4(),
+                  TaskUpdateEvent(
+                    task: widget.task.copyWith(
                       description: description.text,
                       tags: _tags,
                       due: _selectedDay,
                       status: TaskStatus.pending,
-                      imagePath: _image?.path,
+                      imagePath: _image?.path == null ? null : _image!.path,
                     ),
                   ),
                 );
@@ -126,7 +135,7 @@ class _TaskAddRouteState extends State<TaskAddRoute> {
         },
         child: Icon(
           color: Theme.of(context).primaryColor,
-          Icons.add_task_sharp,
+          Icons.check_circle,
           size: 50,
         ),
       ),

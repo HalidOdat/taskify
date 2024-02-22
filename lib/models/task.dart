@@ -66,4 +66,18 @@ class Task {
           (json["imagePath"] as String).isNotEmpty ? json["imagePath"] : null,
     );
   }
+
+  Task copyWith({
+    TaskStatus? status,
+    String? description,
+    DateTime? due,
+    List<String>? tags,
+    String? imagePath,
+  }) =>
+      Task(
+        uuid: uuid,
+        description: description ?? this.description,
+        due: due ?? this.due,
+        tags: tags ?? this.tags,
+      );
 }

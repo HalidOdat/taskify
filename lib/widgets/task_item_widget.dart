@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taskify/blocs/task_bloc.dart';
 import 'package:taskify/models/task.dart';
+import 'package:taskify/routes/routes.dart';
 
 class TaskItemWidget extends StatelessWidget {
   final Task task;
@@ -47,12 +48,21 @@ class TaskItemWidget extends StatelessWidget {
           ],
         ),
       ),
-      // leading: Text("test"),
-      trailing: IconButton(
-        icon: const Icon(Icons.check),
-        onPressed: () {
-          context.read<TaskBloc>().add(TaskRemoveEvent(task: task));
-        },
+      trailing: Wrap(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              Navigator.of(context).pushNamed(Routes.taskEdit, arguments: task);
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: () {
+              context.read<TaskBloc>().add(TaskRemoveEvent(task: task));
+            },
+          ),
+        ],
       ),
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

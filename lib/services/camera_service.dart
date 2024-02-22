@@ -30,6 +30,6 @@ class CameraService {
     final output =
         File(path.join(applicationDir.path, path.basename(photo.path)));
     await output.writeAsBytes(input);
-    return file;
+    return output;
   }
 }
